@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Property Acquisition Scoresheet – Kevin Stewart Team</title>
+<style>
+  :root {
+    color-scheme: light;
+    --dark:       #3e2e43;
+    --purple:     #a77bb6;
+    --purple-light: #d4b8e0;
+    --purple-pale:  #f3edf7;
+    --cream:      #faf8fc;
+    --white:      #ffffff;
+    --gray-50:    #f8f7f9;
+    --gray-100:   #ede9f0;
+    --gray-200:   #d9d1de;
+    --gray-400:   #9c8fa5;
+    --gray-600:   #5a4e62;
+    --gray-800:   #2c1f32;
+    --green:      #166534;
+    --green-bg:   #dcfce7;
+    --green-border:#86efac;
+    --yellow:     #854d0e;
+    --yellow-bg:  #fef9c3;
+    --yellow-border:#fde047;
+    --red:        #991b1b;
+    --red-bg:     #fee2e2;
+    --red-border: #fca5a5;
+    --radius:     10px;
+    --shadow:     0 2px 14px rgba(62,46,67,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: var(--cream);
+    color: var(--gray-800);
+    min-height: 100vh;
+    padding: 0 0 56px;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--dark);
+    color: var(--white);
+    padding: 28px 40px 22px;
+    border-bottom: 4px solid var(--purple);
+  }
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .header-logo { flex-shrink: 0; display: flex; align-items: center; }
+  .header-text h2 {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.3px;
+    line-height: 1.2; color: var(--white);
+  }
+  .header-sub {
+    font-size: 12px; font-family: 'Arial', sans-serif;
+    color: var(--gray-400); margin-top: 4px; font-style: italic;
+  }
+
+  /* ── Main ── */
+  .main {
+    max-width: 860px;
+    margin: 32px auto 0;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .card-header {
+    background: var(--dark);
+    color: var(--white);
+    padding: 12px 24px;
+    font-family: 'Arial', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-header .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--purple);
+    flex-shrink: 0;
+  }
+  .card-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* ── Fields ── */
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .field-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+
+  .field label {
+    font-family: 'Arial', sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--gray-600);
+  }
+  .badge {
+    display: inline-block;
+    font-size: 8px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 5px;
+    vertical-align: middle;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .badge-input { background: #ede9f7; color: #5b21b6; }
+  .badge-calc  { background: var(--purple-pale); color: var(--dark); }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select {
+    font-family: 'Georgia', serif;
+    font-size: 15px;
+    padding: 9px 13px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 7px;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    transition: border 0.15s;
+    width: 100%;
+    appearance: none;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--purple);
+    background: var(--white);
+  }
+  input[readonly] {
+    background: var(--gray-100);
+    color: var(--gray-600);
+    cursor: default;
+    font-style: italic;
+  }
+
+  /* ── Ratio output ── */
+  .ratio-output { display: flex; align-items: center; gap: 10px; }
+  .ratio-value {
+    flex: 1;
+    padding: 9px 13px;
+    border-radius: 7px;
+    font-family: 'Georgia', serif;
+    font-size: 15px;
+    font-style: italic;
+    border: 1.5px solid transparent;
+    background: var(--gray-100);
+    color: var(--gray-600);
+  }
+  .ratio-badge {
+    font-family: 'Arial', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+    transition: all 0.3s;
+  }
+  .ratio-green  { background: var(--green-bg);  color: var(--green);  border: 1.5px solid var(--green-border); }
+  .ratio-yellow { background: var(--yellow-bg); color: var(--yellow); border: 1.5px solid var(--yellow-border); }
+  .ratio-red    { background: var(--red-bg);    color: var(--red);    border: 1.5px solid var(--red-border); }
+  .ratio-none   { background: var(--gray-100);  color: var(--gray-400); border: 1.5px solid var(--gray-200); }
+
+  /* ── Divider ── */
+  .divider { border: none; border-top: 1.5px solid var(--gray-100); margin: 4px 0; }
+
+  /* ── Toggle ── */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--gray-50);
+    border-radius: 8px;
+    border: 1.5px solid var(--gray-200);
+  }
+  .toggle-label {
+    font-family: 'Arial', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.6px; text-transform: uppercase;
+    color: var(--gray-600); flex: 1;
+  }
+  .toggle { position: relative; width: 44px; height: 24px; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; inset: 0;
+    background: var(--gray-200);
+    border-radius: 12px; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .toggle-slider:before {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    left: 3px; top: 3px;
+    background: white; border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .toggle input:checked + .toggle-slider { background: var(--purple); }
+  .toggle input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+  /* ── Expense table ── */
+  .expense-table { width: 100%; border-collapse: collapse; font-family: 'Arial', sans-serif; font-size: 13px; }
+  .expense-table td { padding: 8px 4px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); }
+  .expense-table td:last-child { text-align: right; font-family: 'Georgia', serif; font-size: 14px; color: var(--gray-800); font-weight: 600; }
+  .expense-table tr.total td { border-top: 2px solid var(--dark); border-bottom: none; color: var(--dark); font-weight: 700; padding-top: 10px; }
+  .expense-table tr.dimmed td { color: var(--gray-400); font-style: italic; }
+
+  /* ── NOI box ── */
+  .noi-box {
+    background: var(--dark);
+    color: var(--white);
+    border-radius: 8px;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .noi-label {
+    font-family: 'Arial', sans-serif; font-size: 11px;
+    font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--purple-light);
+  }
+  .noi-sub { font-family: 'Arial', sans-serif; font-size: 10px; color: var(--gray-400); margin-top: 3px; }
+  .noi-value { font-size: 26px; font-weight: 700; color: var(--white); letter-spacing: -0.5px; }
+  .noi-value.positive { color: #86efac; }
+  .noi-value.negative { color: #fca5a5; }
+
+  /* ── Checkbox chips ── */
+  .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
+  .checkbox-group label {
+    display: flex; align-items: center; gap: 7px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1.5px solid var(--gray-200);
+    background: var(--gray-50);
+    font-family: 'Arial', sans-serif; font-size: 12px;
+    font-weight: 600; color: var(--gray-600);
+    cursor: pointer; transition: all 0.15s;
+    user-select: none; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .checkbox-group input[type="radio"],
+  .checkbox-group input[type="checkbox"] {
+    width: auto; padding: 0; accent-color: var(--purple); cursor: pointer;
+  }
+  .checkbox-group label:has(input:checked) {
+    border-color: var(--dark);
+    background: var(--dark);
+    color: var(--white);
+  }
+  /* Section 8 */
+  .s8-high:has(input:checked) { background: var(--green-bg) !important; color: var(--green) !important; border-color: var(--green-border) !important; }
+  .s8-med:has(input:checked)  { background: var(--yellow-bg) !important; color: var(--yellow) !important; border-color: var(--yellow-border) !important; }
+  .s8-low:has(input:checked)  { background: var(--red-bg) !important; color: var(--red) !important; border-color: var(--red-border) !important; }
+  /* Rehab */
+  .rehab-turnkey:has(input:checked) { background: var(--green-bg) !important; color: var(--green) !important; border-color: var(--green-border) !important; }
+  .rehab-light:has(input:checked)   { background: var(--yellow-bg) !important; color: var(--yellow) !important; border-color: var(--yellow-border) !important; }
+  .rehab-heavy:has(input:checked)   { background: var(--red-bg) !important; color: var(--red) !important; border-color: var(--red-border) !important; }
+
+  /* ── Overall Rating ── */
+  .rating-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .rating-option { display: none; }
+  .rating-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 18px 12px;
+    border-radius: 10px;
+    border: 2px solid var(--gray-200);
+    background: var(--gray-50);
+    cursor: pointer;
+    transition: all 0.18s;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    user-select: none;
+  }
+  .rating-icon { font-size: 22px; }
+  .rating-option:checked + .rating-label { color: var(--white); }
+  #rating-good:checked   + .rating-label { background: var(--green);  border-color: var(--green);  }
+  #rating-review:checked + .rating-label { background: #b45309;       border-color: #b45309;       }
+  #rating-reject:checked + .rating-label { background: var(--red);    border-color: var(--red);    }
+
+  /* ── Tax section ── */
+  .info-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: 'Arial', sans-serif; font-size: 11px; font-weight: 700;
+    color: var(--purple); text-decoration: none;
+    padding: 7px 14px; border-radius: 6px;
+    border: 1.5px solid var(--purple-light);
+    background: var(--purple-pale);
+    transition: background 0.15s;
+  }
+  .info-link:hover { background: var(--purple-light); }
+
+  .cap-rate-box {
+    background: var(--purple-pale);
+    border: 1.5px solid var(--purple-light);
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .cap-rate-label {
+    font-family: 'Arial', sans-serif; font-size: 11px;
+    font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--dark);
+  }
+  .cap-rate-sub { font-family: 'Arial', sans-serif; font-size: 10px; color: var(--gray-400); margin-top: 3px; }
+  .cap-rate-value { font-size: 26px; font-weight: 700; color: var(--dark); letter-spacing: -0.5px; }
+
+  /* ── Coming Soon placeholder ── */
+  .placeholder-card {
+    border: 2px dashed var(--gray-200);
+    background: var(--gray-50);
+    box-shadow: none;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    max-width: 860px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 10px;
+    color: var(--gray-400);
+    letter-spacing: 0.5px;
+  }
+  .footer span { color: var(--purple); font-weight: 700; }
+
+  @media (max-width: 600px) {
+    .field-grid { grid-template-columns: 1fr; }
+    .header { padding: 20px; }
+    .header-text h2 { font-size: 17px; }
+    .card-body { padding: 16px; }
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .header, .card-header, .noi-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-logo">
+      <img src="logo.png" alt="Stewart Team Real Estate Partners" style="height:70px;width:auto;display:block;">
+    </div>
+    <div class="header-text">
+      <h2>Investment Property Acquisition Scoresheet</h2>
+      <div class="header-sub">3–5 minute screening · Quickly identify properties that meet investor acquisition criteria</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- PROPERTY INFO -->
+  <div class="card">
+    <div class="card-header"><div class="dot"></div>Property Information</div>
+    <div class="card-body">
+      <div class="field-grid">
+        <div class="field" style="grid-column: 1 / -1;">
+          <label>Property Address</label>
+          <input type="text" id="address" placeholder="123 Main Street, City, State ZIP">
+        </div>
+        <div class="field">
+          <label>List Price</label>
+          <input type="number" id="listPrice" placeholder="0" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>Purchase Price</label>
+          <input type="number" id="purchasePrice" placeholder="0" oninput="calc()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NUMBERS FILTER -->
+  <div class="card">
+    <div class="card-header"><div class="dot"></div>Numbers Filter</div>
+    <div class="card-body">
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Monthly Rent Estimate</label>
+          <input type="number" id="monthlyRent" placeholder="0" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>Annual Gross Rent</label>
+          <input type="text" id="annualRent" readonly placeholder="—">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Rent Ratio</label>
+        <div class="ratio-output">
+          <div class="ratio-value" id="rentRatioVal">—</div>
+          <div class="ratio-badge ratio-none" id="rentRatioBadge">–</div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Annual Taxes</label>
+          <input type="number" id="annualTaxes" placeholder="0" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>Insurance Estimate</label>
+          <input type="text" id="insuranceEst" readonly placeholder="—">
+        </div>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Maintenance Reserve</label>
+          <input type="text" id="maintenanceRes" readonly placeholder="—">
+        </div>
+        <div class="field">
+          <label>Vacancy Reserve</label>
+          <input type="text" id="vacancyRes" readonly placeholder="—">
+        </div>
+      </div>
+
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Property Management</div>
+          <div style="font-family:Arial,sans-serif;font-size:11px;color:var(--gray-400);margin-top:2px;">10% of Annual Rent — toggle off if self-managed</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="pmToggle" checked onchange="calc()">
+          <span class="toggle-slider"></span>
+        </label>
+        <input type="text" id="pmCost" readonly placeholder="—" style="width:130px;flex-shrink:0;">
+      </div>
+
+      <hr class="divider">
+
+      <table class="expense-table">
+        <tr><td>Annual Taxes</td><td id="et-taxes">—</td></tr>
+        <tr><td>Insurance Estimate</td><td id="et-insurance">—</td></tr>
+        <tr><td>Maintenance Reserve</td><td id="et-maintenance">—</td></tr>
+        <tr><td>Vacancy Reserve</td><td id="et-vacancy">—</td></tr>
+        <tr id="et-pm-row"><td>Property Management</td><td id="et-pm">—</td></tr>
+        <tr class="total"><td>Total Operating Expenses</td><td id="et-total">—</td></tr>
+      </table>
+
+      <hr class="divider">
+
+      <div class="noi-box">
+        <div>
+          <div class="noi-label">Estimated NOI</div>
+          <div class="noi-sub">Net Operating Income = Annual Gross Rent − Operating Expenses</div>
+        </div>
+        <div class="noi-value" id="noiValue">—</div>
+      </div>
+
+      <div class="cap-rate-box">
+        <div>
+          <div class="cap-rate-label">Cap Rate</div>
+          <div class="cap-rate-sub">NOI ÷ Purchase Price</div>
+        </div>
+        <div class="cap-rate-value" id="capRateBasic">—</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ACQUISITION GRADE -->
+  <div class="card">
+    <div class="card-header"><div class="dot"></div>Acquisition Grade</div>
+    <div class="card-body">
+
+      <div class="field">
+        <label>Market Tier</label>
+        <div class="checkbox-group">
+          <label><input type="radio" name="marketTier" value="premium"> Premium</label>
+          <label><input type="radio" name="marketTier" value="mid"> Mid-Tier</label>
+          <label><input type="radio" name="marketTier" value="cashflow"> Cash Flow</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Section 8 Potential</label>
+        <div class="checkbox-group">
+          <label class="s8-high"><input type="radio" name="section8" value="high"> High</label>
+          <label class="s8-med"><input type="radio" name="section8" value="medium"> Medium</label>
+          <label class="s8-low"><input type="radio" name="section8" value="low"> Low</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Rehab Level</label>
+        <div class="checkbox-group">
+          <label class="rehab-turnkey"><input type="radio" name="rehabLevel" value="turnkey"> Turnkey</label>
+          <label class="rehab-light"><input type="radio" name="rehabLevel" value="light"> Light Rehab</label>
+          <label class="rehab-heavy"><input type="radio" name="rehabLevel" value="heavy"> Heavy Rehab</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Occupancy Status</label>
+        <div class="checkbox-group">
+          <label><input type="radio" name="occupancy" value="vacant"> Vacant</label>
+          <label><input type="radio" name="occupancy" value="tenant"> Tenant Occupied</label>
+          <label><input type="radio" name="occupancy" value="owner"> Owner Occupied</label>
+        </div>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Current Rent (if applicable)</label>
+          <input type="number" id="currentRent" placeholder="$0">
+        </div>
+        <div class="field">
+          <label>Lease Expiration Date</label>
+          <input type="date" id="leaseExpiration">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TAX UNCAPPING REVIEW -->
+  <div class="card">
+    <div class="card-header"><div class="dot"></div>Tax Uncapping Review</div>
+    <div class="card-body">
+
+      <div class="field">
+        <label>Current Tax Status</label>
+        <div class="checkbox-group">
+          <label><input type="radio" name="taxStatus" value="homestead" onchange="calc()"> Homestead</label>
+          <label><input type="radio" name="taxStatus" value="nonhomestead" onchange="calc()"> Non-Homestead</label>
+        </div>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Current Taxes</label>
+          <input type="number" id="currentTaxes" placeholder="0" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>SEV (State Equalized Value)</label>
+          <input type="text" id="sevValue" readonly placeholder="—">
+        </div>
+      </div>
+
+      <div id="nonHomesteadSection" style="display:flex;flex-direction:column;gap:16px;">
+        <div style="background:var(--purple-pale);border:1.5px solid var(--purple-light);border-radius:8px;padding:14px 18px;">
+          <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--dark);margin-bottom:6px;">For Non-Homestead Properties</div>
+          <div style="font-family:Arial,sans-serif;font-size:12px;color:var(--gray-600);margin-bottom:10px;">Use the SEV above with the Michigan County Assessor Estimator to get the estimated investor tax amount, then enter it below.</div>
+          <a class="info-link" href="https://treas-secure.state.mi.us/ptestimator" target="_blank" rel="noopener">
+            🔗 Open MI Tax Estimator Tool
+          </a>
+        </div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label>Estimated Investor Taxes</label>
+            <input type="number" id="estimatedInvestorTaxes" placeholder="0" oninput="calc()">
+          </div>
+          <div class="field">
+            <label>Tax Increase</label>
+            <input type="text" id="taxIncrease" readonly placeholder="—">
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Adjusted NOI</label>
+          <input type="text" id="adjustedNOI" readonly placeholder="—">
+        </div>
+        <div class="cap-rate-box" style="flex:1;">
+          <div>
+            <div class="cap-rate-label">Adjusted Cap Rate</div>
+            <div class="cap-rate-sub">Adjusted NOI ÷ Purchase Price</div>
+          </div>
+          <div class="cap-rate-value" id="capRateValue">—</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OVERALL RATING -->
+  <div class="card">
+    <div class="card-header"><div class="dot"></div>Overall Rating</div>
+    <div class="card-body">
+      <div class="rating-grid">
+        <div>
+          <input type="radio" class="rating-option" name="overallRating" id="rating-good" value="good">
+          <label class="rating-label" for="rating-good">
+            <span class="rating-icon">✅</span>
+            Good Rental Option
+          </label>
+        </div>
+        <div>
+          <input type="radio" class="rating-option" name="overallRating" id="rating-review" value="review">
+          <label class="rating-label" for="rating-review">
+            <span class="rating-icon">🔍</span>
+            Review with Kevin
+          </label>
+        </div>
+        <div>
+          <input type="radio" class="rating-option" name="overallRating" id="rating-reject" value="reject">
+          <label class="rating-label" for="rating-reject">
+            <span class="rating-icon">❌</span>
+            Reject
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="footer">
+  <span>Stewart Team Real Estate Partners</span> · Investment Property Acquisition Scoresheet · For agent use only
+</div>
+
+<script>
+  const fmt = n => (n === null || isNaN(n)) ? '—' : '$' + Math.round(n).toLocaleString();
+  const pct = n => (n === null || isNaN(n)) ? '—' : (n * 100).toFixed(2) + '%';
+  const pct2 = n => (n === null || isNaN(n)) ? '—' : (n * 100).toFixed(2) + '%';
+
+  function calc() {
+    const purchase = parseFloat(document.getElementById('purchasePrice').value) || null;
+    const monthly  = parseFloat(document.getElementById('monthlyRent').value)   || null;
+    const taxes    = parseFloat(document.getElementById('annualTaxes').value)   || null;
+    const pmOn     = document.getElementById('pmToggle').checked;
+
+    // Tax status toggle
+    const taxStatusEl = document.querySelector('input[name="taxStatus"]:checked');
+    const isNonHomestead = taxStatusEl && taxStatusEl.value === 'nonhomestead';
+    document.getElementById('nonHomesteadSection').style.display = isNonHomestead ? 'flex' : 'none';
+
+    // Annual Rent
+    const annual = monthly ? monthly * 12 : null;
+    document.getElementById('annualRent').value = annual ? fmt(annual) : '';
+
+    // Rent Ratio
+    const ratio = (monthly && purchase) ? monthly / purchase : null;
+    const ratioEl    = document.getElementById('rentRatioVal');
+    const ratioBadge = document.getElementById('rentRatioBadge');
+    if (ratio !== null) {
+      ratioEl.textContent = pct(ratio);
+      if (ratio >= 0.01) {
+        ratioBadge.textContent = '✓ Strong (1%+)';
+        ratioBadge.className = 'ratio-badge ratio-green';
+      } else if (ratio >= 0.0085) {
+        ratioBadge.textContent = '~ Fair (0.85–0.99%)';
+        ratioBadge.className = 'ratio-badge ratio-yellow';
+      } else {
+        ratioBadge.textContent = '✕ Weak (<0.85%)';
+        ratioBadge.className = 'ratio-badge ratio-red';
+      }
+    } else {
+      ratioEl.textContent = '—';
+      ratioBadge.textContent = '–';
+      ratioBadge.className = 'ratio-badge ratio-none';
+    }
+
+    // Insurance, Reserves
+    const insurance   = purchase ? purchase * 0.0075 : null;
+    const maintenance = annual   ? annual   * 0.10   : null;
+    const vacancy     = annual   ? annual   * 0.05   : null;
+    const pm          = (annual && pmOn) ? annual * 0.10 : null;
+
+    document.getElementById('insuranceEst').value  = insurance   ? fmt(insurance)   : '';
+    document.getElementById('maintenanceRes').value = maintenance ? fmt(maintenance) : '';
+    document.getElementById('vacancyRes').value     = vacancy     ? fmt(vacancy)     : '';
+    document.getElementById('pmCost').value         = pmOn ? (pm ? fmt(pm) : '') : 'N/A';
+
+    // Expense table
+    document.getElementById('et-pm-row').className = pmOn ? '' : 'dimmed';
+    document.getElementById('et-taxes').textContent       = taxes       ? fmt(taxes)       : '—';
+    document.getElementById('et-insurance').textContent   = insurance   ? fmt(insurance)   : '—';
+    document.getElementById('et-maintenance').textContent = maintenance ? fmt(maintenance) : '—';
+    document.getElementById('et-vacancy').textContent     = vacancy     ? fmt(vacancy)     : '—';
+    document.getElementById('et-pm').textContent          = pmOn ? (pm ? fmt(pm) : '—') : 'Not included';
+
+    const totalExp = (taxes||0) + (insurance||0) + (maintenance||0) + (vacancy||0) + (pm||0);
+    const hasAny   = taxes || insurance || maintenance || vacancy || pm;
+    document.getElementById('et-total').textContent = hasAny ? fmt(totalExp) : '—';
+
+    // NOI
+    const noi   = (annual && hasAny) ? annual - totalExp : null;
+    const noiEl = document.getElementById('noiValue');
+    noiEl.textContent = noi !== null ? fmt(noi) : '—';
+    noiEl.className   = 'noi-value' + (noi === null ? '' : noi >= 0 ? ' positive' : ' negative');
+
+    // Basic Cap Rate
+    const capRateBasic = (noi !== null && purchase) ? noi / purchase : null;
+    document.getElementById('capRateBasic').textContent = capRateBasic !== null ? pct2(capRateBasic) : '—';
+
+    // ── Tax Uncapping ──
+    // SEV
+    const sev = purchase ? purchase / 2 : null;
+    document.getElementById('sevValue').value = sev ? fmt(sev) : '';
+
+    // Current taxes from tax uncapping section
+    const currentTaxes = parseFloat(document.getElementById('currentTaxes').value) || null;
+    const estInvTaxes  = parseFloat(document.getElementById('estimatedInvestorTaxes').value) || null;
+
+    // Tax increase
+    const taxIncrease = (estInvTaxes !== null && currentTaxes !== null) ? estInvTaxes - currentTaxes : null;
+    document.getElementById('taxIncrease').value = taxIncrease !== null ? fmt(taxIncrease) : '';
+
+    // Adjusted NOI: use estimated investor taxes in place of annual taxes from Numbers Filter
+    // Operating expenses with new taxes = totalExp - (taxes||0) + (estInvTaxes||0)  [taxes = annualTaxes from MLS field]
+    let adjustedNOI = null;
+    if (annual !== null) {
+      const baseTaxForAdj = isNonHomestead && estInvTaxes !== null ? estInvTaxes : (taxes || 0);
+      const adjExp = baseTaxForAdj + (insurance||0) + (maintenance||0) + (vacancy||0) + (pm||0);
+      adjustedNOI = annual - adjExp;
+    }
+    document.getElementById('adjustedNOI').value = adjustedNOI !== null ? fmt(adjustedNOI) : '';
+
+    // Adjusted Cap Rate
+    const capRate = (adjustedNOI !== null && purchase) ? adjustedNOI / purchase : null;
+    document.getElementById('capRateValue').textContent = capRate !== null ? pct2(capRate) : '—';
+  }
+
+  calc();
+</script>
+</body>
+</html>
